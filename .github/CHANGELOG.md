@@ -266,6 +266,10 @@ random_mat2 = rng.standard_normal(3, requires_grad=False)
 
 <h3>Bug fixes</h3>
 
+* Copy of `JacobianTape` now duplicates the `jacobian_options` attribute.  The jax interface
+ now supports adjoint differentiation.
+  [(#1349)](https://github.com/PennyLaneAI/pennylane/pull/1349)
+
 * Fixes incorrect wires in the decomposition of the `ControlledPhaseShift` operation.
   [(#1338)](https://github.com/PennyLaneAI/pennylane/pull/1338)
 

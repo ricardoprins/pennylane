@@ -93,7 +93,6 @@ class JacobianTape(QuantumTape):
         self.jacobian_options = {}
         self.hessian_options = {}
 
-
     def copy(self, copy_operations=False, tape_cls=None):
         copied_tape = super().copy(copy_operations=copy_operations, tape_cls=tape_cls)
         copied_tape.jacobian_options = self.jacobian_options
