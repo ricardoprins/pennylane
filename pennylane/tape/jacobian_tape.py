@@ -263,6 +263,10 @@ class JacobianTape(QuantumTape):
 
         shift = np.zeros_like(params, dtype=np.float64)
         shift[idx] = h
+        print(params.dtype)
+        print(shift.dtype)
+        temp = params+shift
+        print(temp.dtype)
 
         if order == 1:
             # forward finite-difference.
@@ -526,7 +530,6 @@ class JacobianTape(QuantumTape):
 
         if method == "numeric" or "F" in diff_methods:
             # there exist parameters that will be differentiated numerically
-            print("numeric pd point")
             if options.get("order", 1) == 1:
                 # First order (forward) finite-difference will be performed.
                 # Compute the value of the tape at the current parameters here. This ensures
@@ -590,7 +593,6 @@ class JacobianTape(QuantumTape):
 
             jac[:, i] = g
 
-        print("jac: ", jac)
         return jac
 
     def hessian(self, device, params=None, **options):
