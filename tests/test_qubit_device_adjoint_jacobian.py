@@ -381,7 +381,7 @@ class TestAdjointJacobianQNode:
         def f(params1, params2):
             qml.RX(0.4, wires=[0])
             qml.RZ(params1 * jax.numpy.sqrt(params2), wires=[0])
-            qml.RY(tf.cos(params2), wires=[0])
+            qml.RY(jax.numpy.cos(params2), wires=[0])
             return qml.expval(qml.PauliZ(0))
 
         params1 = jax.numpy.array(0.3)
@@ -389,3 +389,8 @@ class TestAdjointJacobianQNode:
 
         qnode1 = QNode(f, dev, interface="jax", diff_method="adjoint")
         qnode2 = QNode(f, dev, interface="jax", diff_method="backprop")
+
+        grad1 = jax.grad(qnode1)(params1, params2)
+        grad2 = jax.grad(qnode2)(params1, params2)
+
+        assert np.allclose(grad1, grad2)
