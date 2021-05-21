@@ -105,7 +105,6 @@ class JAXInterface(AnnotatedQueue):
             def jacobian(params):
                 tape = self.copy()
                 tape.set_parameters(params)
-                print(tape.jacobian_options)
                 return tape.jacobian(device, params=params, **tape.jacobian_options)
 
             val = g.reshape((-1,)) * host_callback.call(

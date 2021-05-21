@@ -30,18 +30,21 @@ from pennylane.operation import State
 from pennylane.interfaces.autograd import AutogradInterface, np as anp
 from pennylane.tape import JacobianTape, QubitParamShiftTape, CVParamShiftTape, ReversibleTape
 
+
 def _jax_float64_support():
-    """Checks if float64 is enabled for jax.  Returns True of float64 support enabled, 
+    """Checks if float64 is enabled for jax.  Returns True of float64 support enabled,
     False if not.
     """
     import jax.numpy as jnp
+
     with warnings.catch_warnings():
-        warnings.filterwarnings('error')
+        warnings.filterwarnings("error")
         try:
             temp = jnp.array(0.1, dtype=jnp.float64)
         except UserWarning:
             return False
     return True
+
 
 class QNode:
     """Represents a quantum node in the hybrid computational graph.
@@ -239,9 +242,11 @@ class QNode:
         if diff_method == "finite-diff":
             if interface == "jax":
                 if not _jax_float64_support():
-                    warnings.warn("float64 support not enabled for jax. "
-                    "May cause inaccuracies for `diff_method='finite-diff'`",
-                    UserWarning)
+                    warnings.warn(
+                        "float64 support not enabled for jax. "
+                        "May cause inaccuracies for `diff_method='finite-diff'`",
+                        UserWarning,
+                    )
 
             return JacobianTape, interface, device, {"method": "numeric"}
 

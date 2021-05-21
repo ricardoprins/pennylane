@@ -98,7 +98,6 @@ class JacobianTape(QuantumTape):
         copied_tape.jacobian_options = self.jacobian_options
         return copied_tape
 
-
     def _grad_method(self, idx, use_graph=True, default_method="F"):
         """Determine the correct partial derivative computation method for each gate parameter.
 
@@ -255,6 +254,7 @@ class JacobianTape(QuantumTape):
             in addition to a post-processing function to be applied to the evaluated
             tapes.
         """
+
         if params is None:
             params = np.array(self.get_parameters())
 
@@ -263,10 +263,6 @@ class JacobianTape(QuantumTape):
 
         shift = np.zeros_like(params, dtype=np.float64)
         shift[idx] = h
-        print(params.dtype)
-        print(shift.dtype)
-        temp = params+shift
-        print(temp.dtype)
 
         if order == 1:
             # forward finite-difference.
@@ -516,6 +512,7 @@ class JacobianTape(QuantumTape):
             params = self.get_parameters()
 
         params = np.array(params)
+
         if method == "device":
             # Using device mode; simply query the device for the Jacobian
             return self.device_pd(device, params=params, **options)
@@ -530,6 +527,7 @@ class JacobianTape(QuantumTape):
 
         if method == "numeric" or "F" in diff_methods:
             # there exist parameters that will be differentiated numerically
+
             if options.get("order", 1) == 1:
                 # First order (forward) finite-difference will be performed.
                 # Compute the value of the tape at the current parameters here. This ensures

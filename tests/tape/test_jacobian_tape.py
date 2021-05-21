@@ -59,11 +59,15 @@ class TestTapeCopying:
         """Tests that the jacobian_options attribute is copied"""
 
         tape = JacobianTape()
-        tape.jacobian_options = {'method': 'device', 'jacobian_method': 'adjoint_jacobian'}
+        tape.jacobian_options = {"method": "device", "jacobian_method": "adjoint_jacobian"}
 
         tape_copy = tape.copy()
 
-        assert tape_copy.jacobian_options == {'method': 'device', 'jacobian_method': 'adjoint_jacobian'}
+        assert tape_copy.jacobian_options == {
+            "method": "device",
+            "jacobian_method": "adjoint_jacobian",
+        }
+
 
 class TestGradMethod:
     """Tests for parameter gradient methods"""

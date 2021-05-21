@@ -267,7 +267,8 @@ random_mat2 = rng.standard_normal(3, requires_grad=False)
 <h3>Bug fixes</h3>
 
 * Copy of `JacobianTape` now duplicates the `jacobian_options` attribute.  The jax interface
- now supports adjoint differentiation.
+ now supports adjoint differentiation.  A warning is raised when jax support for float64 is not
+ enable but the user requests jax and finite diff together.
   [(#1349)](https://github.com/PennyLaneAI/pennylane/pull/1349)
 
 * Fixes incorrect wires in the decomposition of the `ControlledPhaseShift` operation.
