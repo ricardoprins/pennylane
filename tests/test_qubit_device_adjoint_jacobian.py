@@ -374,3 +374,18 @@ class TestAdjointJacobianQNode:
         grad_fd = params1.grad, params2.grad
 
         assert np.allclose(grad_adjoint, grad_fd)
+
+    def test_interface_jax(self, dev):
+        jax = pytest.importorskip("jax")
+
+        def f(params1, params2):
+            qml.RX(0.4, wires=[0])
+            qml.RZ(params1 * jax.numpy.sqrt(params2), wires=[0])
+            qml.RY(tf.cos(params2), wires=[0])
+            return qml.expval(qml.PauliZ(0))
+
+        params1 = jax.numpy.array(0.3)
+        params2 = jax.numpy.array(0.4)
+
+        qnode1 = QNode(f, dev, interface="jax", diff_method="adjoint")
+        qnode2 = QNode(f, dev, interface="jax", diff_method="backprop")
