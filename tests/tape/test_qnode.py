@@ -259,6 +259,15 @@ class TestValidation:
         with pytest.raises(ValueError, match="The default.gaussian device does not"):
             QNode._validate_adjoint_method(dev, "tf")
 
+    def test_validate_finitediff_jax(self):
+        """Tests that a warning is raised if jax and finite differences are used together
+        without enabling float64 mode.  As float64 mode must be enabled on startup, we do
+        test if no error is raised with float64 mode."""
+
+        dev = qml.device('default.qubit', wires=1)
+
+        with pytest.warns(UserWarning, match="float64 support not enabled for jax. "):
+            QNode._validate_finitediff_method(dev, "jax")
 
 class TestTapeConstruction:
     """Tests for the tape construction"""

@@ -240,15 +240,7 @@ class QNode:
             )
 
         if diff_method == "finite-diff":
-            if interface == "jax":
-                if not _jax_float64_support():
-                    warnings.warn(
-                        "float64 support not enabled for jax. "
-                        "May cause inaccuracies for `diff_method='finite-diff'`",
-                        UserWarning,
-                    )
-
-            return JacobianTape, interface, device, {"method": "numeric"}
+            return QNode._validate_finitediff_method(device, interface)
 
         raise qml.QuantumFunctionError(
             f"Differentiation method {diff_method} not recognized. Allowed "
@@ -454,6 +446,29 @@ class QNode:
             )
 
         return JacobianTape, interface, device, {"method": "device"}
+
+    @staticmethod
+    def _validate_finitediff_method(device, interface):
+        """Validates whether a JacobianTape interface supports accurate finite differences.
+
+        Args:
+            device (.Device): PennyLane device
+            interface (str): name of the requested interface
+
+        Returns:
+            tuple[.JacobianTape, str, .Device, dict[str, str]]: Tuple containing the compatible
+            JacobianTape, the interface to apply, the device to use, and the method argument
+            to pass to the ``JacobianTape.jacobian`` method.
+        """
+        if interface == "jax":
+            if not _jax_float64_support():
+                warnings.warn(
+                    "float64 support not enabled for jax. "
+                    "May cause inaccuracies for `diff_method='finite-diff'`",
+                    UserWarning,
+                )
+
+        return JacobianTape, interface, device, {"method": "numeric"}
 
     @staticmethod
     def _get_parameter_shift_tape(device):
