@@ -264,10 +264,11 @@ class TestValidation:
         without enabling float64 mode.  As float64 mode must be enabled on startup, we do
         test if no error is raised with float64 mode."""
 
-        dev = qml.device('default.qubit', wires=1)
+        dev = qml.device("default.qubit", wires=1)
 
         with pytest.warns(UserWarning, match="float64 support not enabled for jax. "):
             QNode._validate_finitediff_method(dev, "jax")
+
 
 class TestTapeConstruction:
     """Tests for the tape construction"""
