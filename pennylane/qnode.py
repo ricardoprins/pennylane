@@ -40,7 +40,7 @@ def _jax_float64_support():
     with warnings.catch_warnings():
         warnings.filterwarnings("error")
         try:
-            temp = jnp.array(0.1, dtype=jnp.float64)
+            jnp.array(0.1, dtype=jnp.float64)
         except UserWarning:
             return False
     return True
